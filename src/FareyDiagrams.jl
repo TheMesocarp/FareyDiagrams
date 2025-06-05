@@ -12,7 +12,10 @@ using GeometryTypes
 # ---------------------------------
 # Graph Construction Utilities
 # ---------------------------------
-
+export FareyGraph, FareyGraph2, # Core graph constructors
+       equitopograph, graphtopo, topograph, # Topograph constructors/related
+       plot_farey_graph, plot_farey_graph_equi, plot_topograph, # Plotting functions
+       interactive_farey_graph
 """Create an empty weighted graph and associated vertex-value dictionary."""
 function create_custom_graph()
     g = SimpleWeightedGraph(0)
