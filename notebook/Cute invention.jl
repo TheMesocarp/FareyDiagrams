@@ -385,18 +385,18 @@ function equi_angle(a::Set{Rational{Int}}) #gives the angle but if it were to be
 	if v ∈ [Rational(-1,0),Rational(1,0)]
 		return π
 	elseif v>=0 && v<=1
-		return theta(v)
+		return mod(theta(v),2π)
 	elseif v>=-1 && v<0
-		return -theta(-v)
+		return mod(-theta(-v),2π)
 	elseif v>1 
-		return π - theta(1/v)
+		return mod(π - theta(1/v),2π)
 	else 
-		return π + theta(-1/v)
+		return mod(π + theta(-1/v),2π)
 	end
 end
 
 # ╔═╡ 2dfdbe63-02a0-471b-9147-fb0416d80d3e
-equi_angle(Set([Rational(0,1)]))
+equi_angle(Set([Rational(-7,4)]))
 
 # ╔═╡ 74e3475c-f443-417c-87e0-104a9cf02429
 continued_fraction(1//1)
@@ -486,15 +486,8 @@ function equitopograph(m::Int,G)
 	DictG = G[2]
 	for i in range(1,m)
 		for t in triangleF(i) #loops over every new triangle 
-			p1_x = my_radius * cos(equi_angle(DictG[t[1]]))
-			p1_y = my_radius * sin(equi_angle(DictG[t[1]]))
-			p2_x = my_radius * cos(equi_angle(DictG[t[2]]))
-			p2_y = my_radius * sin(equi_angle(DictG[t[2]]))
-			p3_x = my_radius * cos(equi_angle(DictG[t[3]]))
-			p3_y = my_radius * sin(equi_angle(DictG[t[3]]))
-			center_x = (p1_x + p2_x + p3_x)/3
-			center_y = (p1_y + p2_y + p3_y)/3
-			centerT = Luxor.Point(center_x,center_y)
+			
+			centerT = centertriangle(t,G)
 			push!(T,centerT)
 		end 
 	end 
@@ -726,17 +719,18 @@ function plot_farey_graph_with_edges2equi(m::Int,G)
     Topo = equitopograph(m,G)
 	Topo = topograph(m,G)
 	T,DictT = graphtopo(m)
+	
 	for e in edges(T)
 		c1 = DictT[src(e)]
 		c2 = DictT[dst(e)]
 		println(first(c1))
 		println(first(c2))
-		setcolor("green")
-		setline(5)
-		line(first(c1),first(c2),:stroke)
+		#setcolor("green")
+		#setline(5)
+		#line(first(c1),first(c2),:stroke)
 		
 		
-	end 
+	end  
 	setline(1)
     for t in Topo #loops over every new triangle 
 		
@@ -1277,7 +1271,10 @@ function interactive_farey_graph()
 end
 
 # ╔═╡ b1d69da2-0592-43f6-9734-06ee3d887311
+# ╠═╡ disabled = true
+#=╠═╡
 interactive_farey_graph()
+  ╠═╡ =#
 
 # ╔═╡ d3bc6551-c75c-4ae7-822c-68d9cf45c73f
 
